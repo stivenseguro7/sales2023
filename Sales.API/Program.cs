@@ -9,9 +9,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DockerConnection"));
 builder.Services.AddTransient<SeedDb>();
+builder.Services.AddTransient<SeedDbCategory>();
 
 var app = builder.Build();
 SeedData(app);
+SeedDataCategory(app);
+
+
 
 void SeedData(WebApplication app)
 {
@@ -24,6 +28,16 @@ void SeedData(WebApplication app)
     }
 }
 
+void SeedDataCategory(WebApplication app) 
+{
+    IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (IServiceScope? scope = scopedFactory!.CreateScope())
+    {
+        SeedDbCategory? service = scope.ServiceProvider.GetService<SeedDbCategory>();
+        service!.SeedAsync().Wait();
+    }
+}
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

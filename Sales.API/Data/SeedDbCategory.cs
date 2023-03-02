@@ -2,11 +2,11 @@
 
 namespace Sales.API.Data
 {
-    public class SeedDb
+    public class SeedDbCategory
     {
         private readonly DataContext _context;
 
-        public SeedDb(DataContext context)
+        public SeedDbCategory(DataContext context)
         {
             _context = context;
         }
@@ -18,11 +18,11 @@ namespace Sales.API.Data
 
         private async Task CheckConstraintAsync()
         {
-            if (!_context.Countries.Any())
+            if (!_context.Categories.Any())
             {
-                _context.Countries.Add(new Country { Name = "Colombia" });
-                _context.Countries.Add(new Country { Name = "Perú" });
-                _context.Countries.Add(new Country { Name = "México" });
+                _context.Categories.Add(new Category { Name = "Tecnología" });
+                _context.Categories.Add(new Category { Name = "Electrodomésticos" });
+                _context.Categories.Add(new Category { Name = "Moda Infantil" });
                 await _context.SaveChangesAsync();
             }
         }
