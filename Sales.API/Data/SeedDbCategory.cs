@@ -27,7 +27,7 @@ namespace Sales.API.Data
                 _context.Categories.Add(new Category { Name = "Moda Mujer" });
                 _context.Categories.Add(new Category { Name = "Aseo" });
                 _context.Categories.Add(new Category { Name = "Cocina" });
-                _context.Categories.Add(new Category { Name = "Muebles y Decoracion" });
+                _context.Categories.Add(new Category { Name = "Muebles" });
                 _context.Categories.Add(new Category { Name = "Accesorios" });
                 _context.Categories.Add(new Category { Name = "Belleza" });
                 await _context.SaveChangesAsync();
