@@ -23,8 +23,8 @@ namespace Sales.API.Data
 
         private async Task CheckConstraintAsync()
         {
-            //if (!_context.Countries.Any())
-            //{
+            if (!_context.Countries.Any())
+            {
                 Response responseCountries = await _apiService.GetListAsync<CountryResponse>("/v1", "/countries");
                 if (responseCountries.IsSuccess)
                 {
@@ -78,6 +78,6 @@ namespace Sales.API.Data
                     }
                 }
             }
-        //}
+        }
     }
 }
