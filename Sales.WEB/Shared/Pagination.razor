@@ -11,7 +11,6 @@
     </ul>
 </nav>
 
-
 @code {
     [Parameter] public int CurrentPage { get; set; } = 1;
     [Parameter] public int TotalPages { get; set; }
@@ -58,11 +57,10 @@
 
     private async Task InternalSelectedPage(PageModel pageModel)
     {
-        if (pageModel.Page == CurrentPage || pageModel.Page == 0)
+        if (pageModel.Page == CurrentPage)
         {
             return;
         }
-
         await SelectedPage.InvokeAsync(pageModel.Page);
     }
 
