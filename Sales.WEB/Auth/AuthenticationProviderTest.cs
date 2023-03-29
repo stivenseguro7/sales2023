@@ -17,6 +17,7 @@ namespace Sales.WEB.Auth
                 },
                 authenticationType: "test");
                 return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(zuluUser)));
+            //anonumous decrementa el contador y zuluUser lo aumenta y permite ver los paises
         }
     }
 }
