@@ -21,7 +21,7 @@ namespace Sales.API.Controllers
         private readonly IMailHelper _mailHelper;
         private readonly string _container;
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IFileStorage fileStorage,IMailHelper mailHelper)
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IFileStorage fileStorage, IMailHelper mailHelper)
         {
             _userHelper = userHelper;
             _configuration = configuration;
@@ -136,6 +136,37 @@ namespace Sales.API.Controllers
             }
 
             return BadRequest(result.Errors.FirstOrDefault());
+        }
+
+        [HttpPost("ResedToken")]
+        public async Task<ActionResult> ResedToken([FromBody] EmailDTO model)
+        {
+            User user = await _userHelper.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            //TODO: improve code
+            var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+            var tokenLink = Url.Action("ConfirmEmail", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["UrlWEB"]);
+
+            var response = _mailHelper.SendMail(user.FullName, user.Email!,
+                $"Saless- Confirmación de cuenta",
+                $"<h1>Sales - Confirmación de cuenta</h1>" +
+                $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
+                $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
+
+            if (response.IsSuccess)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(response.Message);
         }
 
         [HttpGet("ConfirmEmail")]
