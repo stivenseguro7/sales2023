@@ -13,11 +13,11 @@ namespace Sales.API.Helpers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
 
-        public UserHelper(DataContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User>signInManager)
+        public UserHelper(DataContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
         {
-           _context = context;
-           _userManager = userManager;
-           _roleManager = roleManager;
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
         }
 
@@ -38,7 +38,7 @@ namespace Sales.API.Helpers
 
         public async Task AddUserToRoleAsync(User user, string roleName)
         {
-            await _userManager.AddToRoleAsync(user, roleName);  
+            await _userManager.AddToRoleAsync(user, roleName);
         }
 
         public async Task CheckRoleAsync(string roleName)
@@ -95,7 +95,19 @@ namespace Sales.API.Helpers
 
         public async Task LogoutAsync()
         {
-            await  _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
         }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
+        }
+
     }
+
 }
